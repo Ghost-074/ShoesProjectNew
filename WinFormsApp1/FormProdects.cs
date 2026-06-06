@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using WinFormsApp1.Models;
+using User = WinFormsApp1.Models.User; // Направляем компилятор на вашу модель из БД
+
 
 namespace WinFormsApp1
 {
@@ -77,6 +72,13 @@ namespace WinFormsApp1
                         var row = dgvProduct.Rows[rowIndex];
 
                         row.Cells["colPhoto"].Value = LoadProductsImage(product.PhotoUrl);
+
+                        row.Cells["colInfo"].Value = FormatProductInfo(product);
+
+                        row.Cells["colDiscount"].Value = $"{product.Discount}%";
+                        row.Cells["colDiscount"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                        ApplyRowStyles(row, product);
                     }
                 }
             }
@@ -87,6 +89,58 @@ namespace WinFormsApp1
             }
         }
 
+        private void ApplyRowStyles(DataGridViewRow row, Product product)
+        {
+            if (product.Discount > 15)
+            {
+                row.DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#2E8B57");
+                row.DefaultCellStyle.ForeColor = Color.White;
+            }
+
+            if (product.CointInStock <= 0)
+            {
+                row.DefaultCellStyle.ForeColor = Color.LightBlue;
+                if (product.Discount <= 15)
+                {
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+            }
+
+            if (product.Discount > 0)
+            {
+                row.Cells["colDiscount"].Style.ForeColor = Color.Red;
+                row.Cells["colDiscount"].Style.Font = new Font(
+                    "Times New Roman",
+                    12,
+                    FontStyle.Bold);
+            }
+        }
+
+        private string FormatProductInfo(Product product)
+        {
+            string priceText;
+
+            if (product.Discount > 0)
+            {
+                decimal finalProce = product.Price * (100 - product.Discount) / 100;
+                priceText = $"Цена: {product.Price:C} -> {finalProce:C}";
+
+            }
+            else
+            {
+                priceText = $"Цена: {product.Price:C}";
+            }
+
+            return $"{product.Category.CategoryName} | {product.ProductType.ProdType}" + Environment.NewLine +
+                $"Описание товара: {product.Discount}" + Environment.NewLine +
+                $"Производитель: {product.Manufacturer.ManufacturerName}" + Environment.NewLine +
+                $"Поставщик: {product.Supplier.SupplierName}" + Environment.NewLine +
+                $"Цена: {priceText}" + Environment.NewLine +
+                $"Единица измерения: {product.Measure.MeasureName}" + Environment.NewLine +
+                $"Количество на складе: {product.CointInStock}";
+
+        }
+
         private Image LoadProductsImage(string photoUrl)
         {
             if (!string.IsNullOrEmpty(photoUrl) && System.IO.File.Exists(photoUrl))
@@ -94,14 +148,8 @@ namespace WinFormsApp1
                 return Image.FromFile(photoUrl);
             }
 
-            Bitmap bmp = new Bitmap(150, 100);
-            using(Graphics g = Graphics.FromImage(bmp))
-            {
-                g.Clear(Color.White);
-                g.DrawRectangle(Pens.LightGreen, 0, 0, 100, 99);
-            }
+            return Resource1.picture;
 
-            return
         }
 
         private void FormProdects_Load(object sender, EventArgs e)
@@ -112,6 +160,17 @@ namespace WinFormsApp1
         private void dgvProduct_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void BtnLogOut_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
         }
     }
 }

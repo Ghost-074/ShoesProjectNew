@@ -31,7 +31,7 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             panelTop = new Panel();
             lblUserName = new Label();
-            btnLogin = new Button();
+            BtnLogOut = new Button();
             dgvProduct = new DataGridView();
             panelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProduct).BeginInit();
@@ -40,7 +40,7 @@
             // panelTop
             // 
             panelTop.Controls.Add(lblUserName);
-            panelTop.Controls.Add(btnLogin);
+            panelTop.Controls.Add(BtnLogOut);
             panelTop.Dock = DockStyle.Top;
             panelTop.Location = new Point(10, 10);
             panelTop.Name = "panelTop";
@@ -59,17 +59,18 @@
             lblUserName.Text = "label1";
             lblUserName.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // btnLogin
+            // BtnLogOut
             // 
-            btnLogin.BackColor = Color.MediumSpringGreen;
-            btnLogin.Dock = DockStyle.Right;
-            btnLogin.FlatStyle = FlatStyle.Flat;
-            btnLogin.Location = new Point(814, 0);
-            btnLogin.Name = "btnLogin";
-            btnLogin.Size = new Size(150, 30);
-            btnLogin.TabIndex = 5;
-            btnLogin.Text = "Войти";
-            btnLogin.UseVisualStyleBackColor = false;
+            BtnLogOut.BackColor = Color.MediumSpringGreen;
+            BtnLogOut.Dock = DockStyle.Right;
+            BtnLogOut.FlatStyle = FlatStyle.Flat;
+            BtnLogOut.Location = new Point(814, 0);
+            BtnLogOut.Name = "BtnLogOut";
+            BtnLogOut.Size = new Size(150, 30);
+            BtnLogOut.TabIndex = 5;
+            BtnLogOut.Text = "Выйти";
+            BtnLogOut.UseVisualStyleBackColor = false;
+            BtnLogOut.Click += BtnLogOut_Click_1;
             // 
             // dgvProduct
             // 
@@ -124,6 +125,6 @@
         private Panel panelTop;
         private DataGridView dgvProduct;
         private Label lblUserName;
-        private Button btnLogin;
+        private Button BtnLogOut;
     }
 }

@@ -61,6 +61,7 @@ namespace WinFormsApp1
                         .Include(i => i.Manufacturer)
                         .Include(i => i.Supplier)
                         .Include(i => i.Measure)
+                        .Include(i => i.ProductType)
                         .ToList();
 
                     dgvProduct.SuspendLayout();
@@ -80,6 +81,9 @@ namespace WinFormsApp1
 
                         ApplyRowStyles(row, product);
                     }
+
+                    dgvProduct.ResumeLayout();
+                    dgvProduct.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
                 }
             }
             catch (Exception ex)
@@ -99,7 +103,7 @@ namespace WinFormsApp1
 
             if (product.CointInStock <= 0)
             {
-                row.DefaultCellStyle.ForeColor = Color.LightBlue;
+                row.DefaultCellStyle.BackColor = Color.LightBlue;
                 if (product.Discount <= 15)
                 {
                     row.DefaultCellStyle.ForeColor = Color.Black;
@@ -162,15 +166,15 @@ namespace WinFormsApp1
 
         }
 
-        private void BtnLogOut_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-        }
-
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
+        }
+
+        private void BtnLogOut_Click_1(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
         }
     }
 }
